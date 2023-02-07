@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SAP Webservice Access Test</title>
+    <script type="text/javascript">
+      function soap() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open(
+          "POST",
+          "https://zimtsapinterfa2.mh-hannover.local:8011/MHHWS003/WS003Service",
+          true
+        );
+        // xmlhttp.open('POST', 'http://zimtsapinterfa2.mh-hannover.local:8010/MHHWS003/WS003Service', true);
+
+        // build SOAP request
+
+        param_sap_system = "TEST-SP3";
+        param_00001_fall = "49028987";
+
+        param_00002_year = "2025";
+        param_00002_month = "7";
+        param_00002_day = "25";
+        param_00002_hour = "23";
+        param_00002_minute = "12";
+        param_00002_second = "0";
+        param_00002_ward = "22";
+        param_00002_diagnose = "X";
+
+        var req_00001 =
+          '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+          "    <SOAP-ENV:Body>" +
+          '        <m:ExtCommon xmlns:m="http://mhhws003.mhh.lippo.de/">' +
+          "            <FuncName>VisitView</FuncName>" +
+          "            <AccessCode>djrKQo4c35svxm8E3xDmU92g5t8T1q4mlkByWn96</AccessCode>" +
+          `            <In001>${param_sap_system}</In001>` +
+          "            <In002>00001</In002>" +
+          `            <In003>${param_00001_fall}</In003>` +
+          "            <In004>String</In004>" +
+          "            <In005>String</In005>" +
+          "            <In006>String</In006>" +
+          "            <In007>String</In007>" +
+          "            <In008>String</In008>" +
+          "            <In009>String</In009>" +
+          "            <In010>String</In010>" +
+          "            <In011>String</In011>" +
+          "            <In012>String</In012>" +
+          "            <In013>String</In013>" +
+          "            <In014>String</In014>" +
+          "            <In015>String</In015>" +
+          "            <In016>String</In016>" +
+          "            <In017>String</In017>" +
+          "            <In018>String</In018>" +
+          "            <In019>String</In019>" +
+          "            <In020>String</In020>" +
+          "        </m:ExtCommon>" +
+          "    </SOAP-ENV:Body>" +
+          "</SOAP-ENV:Envelope>";
+
+        var req_00002 =
+          '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+          "    <SOAP-ENV:Body>" +
+          '        <m:ExtCommon xmlns:m="http://mhhws003.mhh.lippo.de/">' +
+          "            <FuncName>VisitView</FuncName>" +
+          "            <AccessCode>djrKQo4c35svxm8E3xDmU92g5t8T1q4mlkByWn96</AccessCode>" +
+          `            <In001>${param_sap_system}</In001>` +
+          "            <In002>00002</In002>" +
+          `            <In003>${param_00002_year}</In003>` +
+          `            <In004>${param_00002_month}</In004>` +
+          `            <In005>${param_00002_day}</In005>` +
+          `            <In006>${param_00002_hour}</In006>` +
+          `            <In007>${param_00002_minute}</In007>` +
+          `            <In008>${param_00002_second}</In008>` +
+          `            <In009>${param_00002_ward}</In009>` +
+          `            <In010>${param_00002_diagnose}</In010>` +
+          "            <In011>String</In011>" +
+          "            <In012>String</In012>" +
+          "            <In013>String</In013>" +
+          "            <In014>String</In014>" +
+          "            <In015>String</In015>" +
+          "            <In016>String</In016>" +
+          "            <In017>String</In017>" +
+          "            <In018>String</In018>" +
+          "            <In019>String</In019>" +
+          "            <In020>String</In020>" +
+          "        </m:ExtCommon>" +
+          "    </SOAP-ENV:Body>" +
+          "</SOAP-ENV:Envelope>";
+
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) {
+              received2();
+            }
+          }
+        };
+
+        function received2() {
+          const data_object = JSON.parse(
+            xmlhttp.responseXML.getElementsByTagName("ret04")[0].childNodes[0]
+              .nodeValue
+          );
+
+          let table =
+            "<tr><th>Zimmer</th><th>Bett</th><th>Abt</th><th>Name</th><th>Vorname</th><th>Sex</th><th>Alter</th><th>Geb</th><th>IZahl</th><th>Fall</th><th>Diagnose</th></tr>";
+          for (let i = 0; i < data_object.patients.length; i++) {
+            table +=
+              "<tr><td>" +
+              data_object.patients[i].room +
+              "</td><td>" +
+              data_object.patients[i].bed +
+              "</td><td>" +
+              data_object.patients[i].department +
+              "</td><td>" +
+              data_object.patients[i].name +
+              "</td><td>" +
+              data_object.patients[i].chrname +
+              "</td><td>" +
+              data_object.patients[i].sex +
+              "</td><td>" +
+              data_object.patients[i].age +
+              "</td><td>" +
+              data_object.patients[i].birth +
+              "</td><td>" +
+              data_object.patients[i].patnum +
+              "</td><td>" +
+              data_object.patients[i].case +
+              "</td><td>" +
+              data_object.patients[i].diagnose +
+              "</td></tr>";
+          }
+          document.getElementById("demo4").innerHTML = table;
+
+          let table2 =
+            "<tr><th>Abt</th><th>Name</th><th>Vorname</th><th>Sex</th><th>Alter</th><th>Geb</th><th>IZahl</th><th>Fall</th><th>Diagnose</th></tr>";
+          for (let i = 0; i < data_object.arrivals.length; i++) {
+            table2 +=
+            "<tr><td>" +
+              data_object.arrivals[i].department +
+              "</td><td>" +
+              data_object.arrivals[i].name +
+              "</td><td>" +
+              data_object.arrivals[i].chrname +
+              "</td><td>" +
+              data_object.arrivals[i].sex +
+              "</td><td>" +
+              data_object.arrivals[i].age +
+              "</td><td>" +
+              data_object.arrivals[i].birth +
+              "</td><td>" +
+              data_object.arrivals[i].patnum +
+              "</td><td>" +
+              data_object.arrivals[i].case +
+              "</td><td>" +
+              data_object.arrivals[i].diagnose +
+              "</td></tr>";
+          }
+          document.getElementById("demo5").innerHTML = table2;
+        }
+
+        function received() {
+          const data_object = JSON.parse(
+            xmlhttp.responseXML.getElementsByTagName("ret04")[0].childNodes[0]
+              .nodeValue
+          );
+
+          let table = "<tr><th>English</th><th>German</th></tr>";
+          for (let i = 0; i < data_object.vokabeln.length; i++) {
+            table +=
+              "<tr><td>" +
+              data_object.vokabeln[i].english +
+              "</td><td>" +
+              data_object.vokabeln[i].german +
+              "</td></tr>";
+          }
+          document.getElementById("demo3").innerHTML =
+            data_object.izahl +
+            " " +
+            data_object.fall +
+            " " +
+            data_object.name +
+            ", " +
+            data_object.vorname +
+            ", *" +
+            data_object.geb +
+            "<br>" +
+            data_object.adr.strasse +
+            ", " +
+            data_object.adr.plzort +
+            "<br>";
+
+          document.getElementById("demo4").innerHTML = table;
+        }
+
+        // Send the POST request
+        xmlhttp.setRequestHeader("Content-Type", "text/xml");
+        xmlhttp.send(req_00002);
+      }
+    </script>
+  </head>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th,
+    td {
+      padding: 5px;
+    }
+  </style>
+  <body>
+    <form name="Demo" action="" method="post">
+      <div>
+        <input type="button" value="Soap" onclick="soap();" />
+      </div>
+    </form>
+
+    <p id="demo3"></p>
+    <br />
+    <table id="demo4"></table>
+    <br />
+    <table id="demo5"></table>
+  </body>
+</html>
